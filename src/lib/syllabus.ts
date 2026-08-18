@@ -14,8 +14,8 @@ export const SUBJECTS: SubjectMeta[] = [
   { id: "sst", name: "Social Science", short: "SST", emoji: "🌍", tone: "subject-sst" },
 ];
 
-export const subjectMeta = (id: SubjectId) =>
-  SUBJECTS.find((s) => s.id === id) ?? SUBJECTS[0];
+export const subjectMeta = (id: SubjectId): SubjectMeta =>
+  SUBJECTS.find((s) => s.id === id) as SubjectMeta;
 
 export interface SyllabusChapter {
   key: string;
