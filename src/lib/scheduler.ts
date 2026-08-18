@@ -340,10 +340,10 @@ export function buildPlan(state: AppState, exam: Exam, fromISO = todayISO()): Pl
   }
   revTasks.sort((a, b) => a.earliest - b.earliest);
   for (const { task, earliest } of revTasks) {
-    let placedDay: DayPlan | null = null;
+    let placedDay: DayPlan | undefined;
     for (let i = Math.max(0, earliest); i < schedulable.length; i++) {
       const d = schedulable[i];
-      if (d.capacity - d.used >= durationOf(task)) {
+      if (d && d.capacity - d.used >= durationOf(task)) {
         placedDay = d;
         break;
       }
@@ -351,7 +351,7 @@ export function buildPlan(state: AppState, exam: Exam, fromISO = todayISO()): Pl
     if (!placedDay) {
       for (let i = Math.max(0, earliest) - 1; i >= 0; i--) {
         const d = schedulable[i];
-        if (d.capacity - d.used >= durationOf(task)) {
+        if (d && d.capacity - d.used >= durationOf(task)) {
           placedDay = d;
           break;
         }
@@ -364,8 +364,8 @@ export function buildPlan(state: AppState, exam: Exam, fromISO = todayISO()): Pl
     placedDay.tasks.push({ ...task, minutes: durationOf(task) });
     placedDay.used += durationOf(task);
     if (task.chapterId) {
-      chapterRevisions[task.chapterId] = chapterRevisions[task.chapterId] ?? [];
-      chapterRevisions[task.chapterId].push({
+      const list = chapterRevisions[task.chapterId] ?? [];
+      list.push({
         date: placedDay.date,
         type: task.revisionType ?? "Revision",
       });
