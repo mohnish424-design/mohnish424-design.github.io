@@ -230,7 +230,8 @@ export function buildPlan(state: AppState, exam: Exam, fromISO = todayISO()): Pl
   const pinnedPlaced = new Set<string>();
   for (const t of allTasks) {
     if (!pinnedIds.has(t.id)) continue;
-    const day = byDate[state.pins[t.id]];
+    const pinISO = state.pins[t.id];
+    const day = pinISO ? byDate[pinISO] : undefined;
     if (!day || day.phase === "exam") continue;
     day.tasks.push({ ...t, minutes: durationOf(t) });
     day.used += durationOf(t);
