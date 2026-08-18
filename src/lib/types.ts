@@ -6,21 +6,21 @@ export interface ExamChapter {
   id: string; // unique within exam
   key: string; // syllabus key
   subject: SubjectId;
-  section?: string;
+  section?: string | undefined;
   name: string;
   lectures: number;
   lectureMinutes: number;
   lecturesDone: number;
   extraMinutes: number; // estimated total
   extraDoneMinutes: number;
-  extraUnknown?: boolean;
+  extraUnknown?: boolean | undefined;
 }
 
 export interface Availability {
   weekday: number; // minutes
   saturday: number;
   sunday: number;
-  dailyMax?: number | null;
+  dailyMax?: number | null | undefined;
   startTime: string; // "16:00"
 }
 
