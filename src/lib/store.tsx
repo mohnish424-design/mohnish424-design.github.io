@@ -127,7 +127,13 @@ interface Ctx {
     date: string;
     subjects: SubjectId[];
     availability: Availability;
-    chapterKeys: { subject: SubjectId; key: string }[];
+    chapterKeys: {
+      subject: SubjectId;
+      key: string;
+      lectures?: number;
+      lectureMinutes?: number;
+      extraMinutes?: number;
+    }[];
   }) => string;
   updateExam: (id: string, patch: Partial<Exam>) => void;
   deleteExam: (id: string) => void;
@@ -206,7 +212,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       createExam: (data) => {
         const id = uid();
         const chapters = data.chapterKeys
-          .map((c) => chapterFromKey(c.subject, c.key))
+          .map((c) =>
+            chapterFromKey(c.subject, c.key, {
+              ...(c.lectures !== undefined ? { lectures: c.lectures } : {}),
+              ...(c.lectureMinutes !== undefined
+                ? { lectureMinutes: c.lectureMinutes }
+                : {}),
+              ...(c.extraMinutes !== undefined ? { extraMinutes: c.extraMinutes } : {}),
+            }),
+          )
           .filter(Boolean) as ExamChapter[];
         const exam: Exam = {
           id,
