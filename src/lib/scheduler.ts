@@ -247,7 +247,7 @@ export function buildPlan(state: AppState, exam: Exam, fromISO = todayISO()): Pl
   let splitIndex = schedulable.length;
   for (let i = schedulable.length - 1; i >= 0; i--) {
     if (acc >= reserve) break;
-    acc += schedulable[i].capacity;
+    acc += schedulable[i]?.capacity ?? 0;
     splitIndex = i;
   }
   splitIndex = Math.max(1, Math.min(splitIndex, schedulable.length));
@@ -255,13 +255,11 @@ export function buildPlan(state: AppState, exam: Exam, fromISO = todayISO()): Pl
   const revisionDays = schedulable.slice(splitIndex);
   learningDays.forEach((d) => (d.phase = "learning"));
   revisionDays.forEach((d) => (d.phase = "revision"));
-  const deadline = learningDays.length
-    ? learningDays[learningDays.length - 1].date
-    : null;
+  const deadline = learningDays[learningDays.length - 1]?.date ?? null;
 
   // Learning queue: per-subject queues, chapter order preserved.
   const subjects: SubjectId[] = ["math", "science", "sst"];
-  const queues: Record<string, Task[]> = { math: [], science: [], sst: [] };
+  const queues: Record<SubjectId, Task[]> = { math: [], science: [], sst: [] };
   for (const p of perChapter) {
     const pending = [...p.lectures, ...p.extras].filter((t) => !pinnedPlaced.has(t.id));
     queues[p.c.subject].push(...pending);
