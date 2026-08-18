@@ -369,6 +369,7 @@ export function buildPlan(state: AppState, exam: Exam, fromISO = todayISO()): Pl
         date: placedDay.date,
         type: task.revisionType ?? "Revision",
       });
+      chapterRevisions[task.chapterId] = list;
     }
   }
   Object.values(chapterRevisions).forEach((list) =>
