@@ -217,25 +217,29 @@ export function SetupWizard({ onDone }: { onDone?: () => void }) {
               return (
                 <div key={p.key} className="card-surface space-y-3 p-4">
                   <p className="font-semibold">{chapterName(p.key)}</p>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="space-y-3">
                     <NumField
-                      label="PW lectures"
+                      label="Number of PW lectures"
                       value={w.lectures}
+                      suffix="lectures"
                       onChange={(v) => setWl(p.key, { lectures: v })}
                     />
                     <NumField
-                      label="Avg minutes"
+                      label="Average length of one lecture"
                       value={w.lectureMinutes}
                       step={5}
+                      suffix="min"
                       onChange={(v) => setWl(p.key, { lectureMinutes: v })}
                     />
                     <NumField
-                      label="Extra Qs (min)"
+                      label="Extra questions practice"
                       value={w.extraMinutes}
                       step={15}
+                      suffix="min"
                       onChange={(v) => setWl(p.key, { extraMinutes: v })}
                     />
                   </div>
+
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <span>
                       Lectures {fmtMinutes(w.lectures * w.lectureMinutes)} · Extra{" "}
