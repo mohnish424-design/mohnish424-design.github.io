@@ -310,7 +310,15 @@ function ChapterPage() {
   );
 }
 
-function Row({ label, value, hint }: { label: string; value: string; hint?: string }) {
+function Row({
+  label,
+  value,
+  hint,
+}: {
+  label: string;
+  value: string;
+  hint?: string | undefined;
+}) {
   return (
     <div className="flex items-start justify-between gap-3 p-3">
       <span className="text-muted-foreground">{label}</span>

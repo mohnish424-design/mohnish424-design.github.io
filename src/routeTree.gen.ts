@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ScheduleRouteImport } from './routes/schedule'
+import { Route as ChaptersChapterIdRouteImport } from './routes/chapters.$chapterId'
 import { Route as SubjectsIndexRouteImport } from './routes/subjects.index'
 import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjectId'
 
@@ -22,6 +23,11 @@ const IndexRoute = IndexRouteImport.update({
 const ScheduleRoute = ScheduleRouteImport.update({
   id: '/schedule',
   path: '/schedule',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChaptersChapterIdRoute = ChaptersChapterIdRouteImport.update({
+  id: '/chapters/$chapterId',
+  path: '/chapters/$chapterId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubjectsIndexRoute = SubjectsIndexRouteImport.update({
@@ -38,12 +44,14 @@ const SubjectsSubjectIdRoute = SubjectsSubjectIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/schedule': typeof ScheduleRoute
+  '/chapters/$chapterId': typeof ChaptersChapterIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
   '/subjects/': typeof SubjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/schedule': typeof ScheduleRoute
+  '/chapters/$chapterId': typeof ChaptersChapterIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
   '/subjects': typeof SubjectsIndexRoute
 }
@@ -51,20 +59,38 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/schedule': typeof ScheduleRoute
+  '/chapters/$chapterId': typeof ChaptersChapterIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
   '/subjects/': typeof SubjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/schedule' | '/subjects/$subjectId' | '/subjects/'
+  fullPaths:
+    | '/'
+    | '/schedule'
+    | '/chapters/$chapterId'
+    | '/subjects/$subjectId'
+    | '/subjects/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/schedule' | '/subjects/$subjectId' | '/subjects'
-  id: '__root__' | '/' | '/schedule' | '/subjects/$subjectId' | '/subjects/'
+  to:
+    | '/'
+    | '/schedule'
+    | '/chapters/$chapterId'
+    | '/subjects/$subjectId'
+    | '/subjects'
+  id:
+    | '__root__'
+    | '/'
+    | '/schedule'
+    | '/chapters/$chapterId'
+    | '/subjects/$subjectId'
+    | '/subjects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ScheduleRoute: typeof ScheduleRoute
+  ChaptersChapterIdRoute: typeof ChaptersChapterIdRoute
   SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRoute
   SubjectsIndexRoute: typeof SubjectsIndexRoute
 }
@@ -83,6 +109,13 @@ declare module '@tanstack/react-router' {
       path: '/schedule'
       fullPath: '/schedule'
       preLoaderRoute: typeof ScheduleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chapters/$chapterId': {
+      id: '/chapters/$chapterId'
+      path: '/chapters/$chapterId'
+      fullPath: '/chapters/$chapterId'
+      preLoaderRoute: typeof ChaptersChapterIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/subjects/': {
@@ -105,6 +138,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ScheduleRoute: ScheduleRoute,
+  ChaptersChapterIdRoute: ChaptersChapterIdRoute,
   SubjectsSubjectIdRoute: SubjectsSubjectIdRoute,
   SubjectsIndexRoute: SubjectsIndexRoute,
 }
