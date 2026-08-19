@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as ScheduleRouteImport } from './routes/schedule'
 import { Route as ChaptersChapterIdRouteImport } from './routes/chapters.$chapterId'
+import { Route as ExamsIndexRouteImport } from './routes/exams.index'
 import { Route as SubjectsIndexRouteImport } from './routes/subjects.index'
 import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjectId'
 
@@ -36,6 +37,11 @@ const ChaptersChapterIdRoute = ChaptersChapterIdRouteImport.update({
   path: '/chapters/$chapterId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExamsIndexRoute = ExamsIndexRouteImport.update({
+  id: '/exams/',
+  path: '/exams/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubjectsIndexRoute = SubjectsIndexRouteImport.update({
   id: '/subjects/',
   path: '/subjects/',
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/schedule': typeof ScheduleRoute
   '/chapters/$chapterId': typeof ChaptersChapterIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
+  '/exams/': typeof ExamsIndexRoute
   '/subjects/': typeof SubjectsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/schedule': typeof ScheduleRoute
   '/chapters/$chapterId': typeof ChaptersChapterIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
+  '/exams': typeof ExamsIndexRoute
   '/subjects': typeof SubjectsIndexRoute
 }
 export interface FileRoutesById {
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/schedule': typeof ScheduleRoute
   '/chapters/$chapterId': typeof ChaptersChapterIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
+  '/exams/': typeof ExamsIndexRoute
   '/subjects/': typeof SubjectsIndexRoute
 }
 export interface FileRouteTypes {
@@ -80,6 +89,7 @@ export interface FileRouteTypes {
     | '/schedule'
     | '/chapters/$chapterId'
     | '/subjects/$subjectId'
+    | '/exams/'
     | '/subjects/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -88,6 +98,7 @@ export interface FileRouteTypes {
     | '/schedule'
     | '/chapters/$chapterId'
     | '/subjects/$subjectId'
+    | '/exams'
     | '/subjects'
   id:
     | '__root__'
@@ -96,6 +107,7 @@ export interface FileRouteTypes {
     | '/schedule'
     | '/chapters/$chapterId'
     | '/subjects/$subjectId'
+    | '/exams/'
     | '/subjects/'
   fileRoutesById: FileRoutesById
 }
@@ -105,6 +117,7 @@ export interface RootRouteChildren {
   ScheduleRoute: typeof ScheduleRoute
   ChaptersChapterIdRoute: typeof ChaptersChapterIdRoute
   SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRoute
+  ExamsIndexRoute: typeof ExamsIndexRoute
   SubjectsIndexRoute: typeof SubjectsIndexRoute
 }
 
@@ -138,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChaptersChapterIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exams/': {
+      id: '/exams/'
+      path: '/exams'
+      fullPath: '/exams/'
+      preLoaderRoute: typeof ExamsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/subjects/': {
       id: '/subjects/'
       path: '/subjects'
@@ -161,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScheduleRoute: ScheduleRoute,
   ChaptersChapterIdRoute: ChaptersChapterIdRoute,
   SubjectsSubjectIdRoute: SubjectsSubjectIdRoute,
+  ExamsIndexRoute: ExamsIndexRoute,
   SubjectsIndexRoute: SubjectsIndexRoute,
 }
 export const routeTree = rootRouteImport
