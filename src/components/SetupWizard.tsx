@@ -217,25 +217,29 @@ export function SetupWizard({ onDone }: { onDone?: () => void }) {
               return (
                 <div key={p.key} className="card-surface space-y-3 p-4">
                   <p className="font-semibold">{chapterName(p.key)}</p>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="space-y-3">
                     <NumField
-                      label="PW lectures"
+                      label="Number of PW lectures"
                       value={w.lectures}
+                      suffix="lectures"
                       onChange={(v) => setWl(p.key, { lectures: v })}
                     />
                     <NumField
-                      label="Avg minutes"
+                      label="Average length of one lecture"
                       value={w.lectureMinutes}
                       step={5}
+                      suffix="min"
                       onChange={(v) => setWl(p.key, { lectureMinutes: v })}
                     />
                     <NumField
-                      label="Extra Qs (min)"
+                      label="Extra questions practice"
                       value={w.extraMinutes}
                       step={15}
+                      suffix="min"
                       onChange={(v) => setWl(p.key, { extraMinutes: v })}
                     />
                   </div>
+
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <span>
                       Lectures {fmtMinutes(w.lectures * w.lectureMinutes)} · Extra{" "}
@@ -372,12 +376,14 @@ export function NumField({
   onChange,
   step = 1,
   wide,
+  suffix,
 }: {
   label: string;
   value: number;
   onChange: (v: number) => void;
   step?: number;
   wide?: boolean;
+  suffix?: string;
 }) {
   return (
     <label className={cn("block space-y-1", wide && "card-surface p-4")}>
@@ -386,20 +392,35 @@ export function NumField({
         <button
           type="button"
           onClick={() => onChange(Math.max(0, value - step))}
-          className="tap h-9 w-9 shrink-0 rounded-lg border border-border text-lg leading-none"
+          className="tap h-10 w-10 shrink-0 rounded-lg border border-border text-lg leading-none"
         >
           −
         </button>
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => onChange(Math.max(0, Number(e.target.value)))}
-          className="w-full rounded-lg border border-border bg-card px-2 py-2 text-center text-sm outline-none focus:border-primary"
-        />
+        <div className="relative flex-1">
+          <input
+            type="number"
+            inputMode="numeric"
+            value={String(value)}
+            onFocus={(e) => e.currentTarget.select()}
+            onChange={(e) => {
+              const raw = e.target.value;
+              onChange(raw === "" ? 0 : Math.max(0, Math.floor(Number(raw))));
+            }}
+            className={cn(
+              "w-full rounded-lg border border-border bg-card py-2.5 text-center text-base font-semibold outline-none focus:border-primary",
+              suffix ? "pr-12 pl-3" : "px-3",
+            )}
+          />
+          {suffix ? (
+            <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-[11px] text-muted-foreground">
+              {suffix}
+            </span>
+          ) : null}
+        </div>
         <button
           type="button"
           onClick={() => onChange(value + step)}
-          className="tap h-9 w-9 shrink-0 rounded-lg border border-border text-lg leading-none"
+          className="tap h-10 w-10 shrink-0 rounded-lg border border-border text-lg leading-none"
         >
           +
         </button>
@@ -407,6 +428,7 @@ export function NumField({
     </label>
   );
 }
+
 
 function Row({ label, value, strong }: { label: string; value: string; strong?: boolean }) {
   return (
