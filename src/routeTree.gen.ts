@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as ScheduleRouteImport } from './routes/schedule'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ChaptersChapterIdRouteImport } from './routes/chapters.$chapterId'
 import { Route as ExamsIndexRouteImport } from './routes/exams.index'
 import { Route as ExamsNewRouteImport } from './routes/exams.new'
@@ -31,6 +32,11 @@ const CalendarRoute = CalendarRouteImport.update({
 const ScheduleRoute = ScheduleRouteImport.update({
   id: '/schedule',
   path: '/schedule',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChaptersChapterIdRoute = ChaptersChapterIdRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
   '/schedule': typeof ScheduleRoute
+  '/settings': typeof SettingsRoute
   '/chapters/$chapterId': typeof ChaptersChapterIdRoute
   '/exams/new': typeof ExamsNewRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
   '/schedule': typeof ScheduleRoute
+  '/settings': typeof SettingsRoute
   '/chapters/$chapterId': typeof ChaptersChapterIdRoute
   '/exams/new': typeof ExamsNewRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
   '/schedule': typeof ScheduleRoute
+  '/settings': typeof SettingsRoute
   '/chapters/$chapterId': typeof ChaptersChapterIdRoute
   '/exams/new': typeof ExamsNewRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/calendar'
     | '/schedule'
+    | '/settings'
     | '/chapters/$chapterId'
     | '/exams/new'
     | '/subjects/$subjectId'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/calendar'
     | '/schedule'
+    | '/settings'
     | '/chapters/$chapterId'
     | '/exams/new'
     | '/subjects/$subjectId'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/'
     | '/calendar'
     | '/schedule'
+    | '/settings'
     | '/chapters/$chapterId'
     | '/exams/new'
     | '/subjects/$subjectId'
@@ -127,6 +139,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CalendarRoute: typeof CalendarRoute
   ScheduleRoute: typeof ScheduleRoute
+  SettingsRoute: typeof SettingsRoute
   ChaptersChapterIdRoute: typeof ChaptersChapterIdRoute
   ExamsNewRoute: typeof ExamsNewRoute
   SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRoute
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/schedule'
       fullPath: '/schedule'
       preLoaderRoute: typeof ScheduleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/chapters/$chapterId': {
@@ -199,6 +219,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CalendarRoute: CalendarRoute,
   ScheduleRoute: ScheduleRoute,
+  SettingsRoute: SettingsRoute,
   ChaptersChapterIdRoute: ChaptersChapterIdRoute,
   ExamsNewRoute: ExamsNewRoute,
   SubjectsSubjectIdRoute: SubjectsSubjectIdRoute,
